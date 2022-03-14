@@ -8,9 +8,9 @@ inputs:
   builtimage:
     description: 'Docker path to pull the built image from'
     required: true
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  token:
+    description: 'Github API token. Use ${{ secrets.GITHUB_TOKEN }} in an action to get this'
+    required: true
 runs:
   using: 'node16'
   main: 'index.js'
