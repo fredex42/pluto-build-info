@@ -1,0 +1,16 @@
+name: 'Pluto Buildinfo'
+description: 'Generate a build-info.yaml file'
+inputs:
+  filename:  # id of input
+    description: 'Name of the file to output'
+    required: true
+    default: 'build-info.yaml'
+  builtimage:
+    description: 'Docker path to pull the built image from'
+    required: true
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'node16'
+  main: 'index.js'
