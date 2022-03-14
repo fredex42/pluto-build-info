@@ -2,14 +2,14 @@ const core = require("@actions/core");
 const github = require("@actions/github");
 const yaml = require('js-yaml');
 const fs   = require('fs');
-const { Octokit } = require("@octokit/rest");
+//const { Octokit } = require("@octokit/rest");
 
 console.log(`GITHUB_TOKEN is ${process.env.GITHUB_TOKEN}`)
-//const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
-const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN,
-    userAgent: "pluto-build-info v1.0",
-});
+const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+// const octokit = new Octokit({
+//     auth: process.env.GITHUB_TOKEN,
+//     userAgent: "pluto-build-info v1.0",
+// });
 
 
 /*
