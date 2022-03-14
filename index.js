@@ -5,8 +5,7 @@ const fs   = require('fs');
 const { Octokit } = require("@octokit/rest");
 
 const token = core.getInput("token") ?? process.env.GITHUB_TOKEN;
-console.log(`GITHUB_TOKEN is ${token}`)
-//const octokit = github.getOctokit(token);
+
 const octokit = new Octokit({
     auth: token,
     userAgent: "pluto-build-info v1.0",
@@ -48,20 +47,19 @@ async function main() {
 
     try {
         const data = {
-            ci_commit_branch: github.context.ref,
+            ci_commit_branch: prInfo ? prInfo.data.head.ref : github.context.ref,
             ci_commit_ref_name: github.context.ref,
             ci_commit_sha: github.context.sha,
             ci_commit_timestamp: commitInfo.data.author.date,
-            ci_commit_title: commitInfo.data.title,
+            ci_commit_title: commitInfo.data.message,
             ci_job_url: `${github.context.serverUrl}/${repo}/actions/runs/${github.context.runId}`,
             ci_project_name: github.context.payload.repository.full_name,
             ci_merge_request_project_url: github.context.payload.pull_request ? github.context.payload.pull_request.html_url : "",
-            ci_merge_request_title: prInfo ? prInfo.title : "",
+            ci_merge_request_title: prInfo ? prInfo.data.title : "",
             built_image: core.getInput("builtImage")
         }
 
         const contentToWrite = yaml.dump(data);
-        console.log("contentToWrite: ", contentToWrite);
         fs.writeFileSync(core.getInput("filename"), contentToWrite);
     } catch(err) {
         core.setFailed(err);
