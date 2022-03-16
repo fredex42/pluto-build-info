@@ -11,6 +11,19 @@ const octokit = new Octokit({
     userAgent: "pluto-build-info v1.0",
 });
 
+async function write_comment(content) {
+    await octokit.issues.createComment({
+        owner: github.context.repo.owner,
+        repo: github.context.repo.repo,
+        issue_number: github.context.issue.number,
+        body: content,
+    })
+}
+
+function build_comment_body(data) {
+    return `This was published to a Docker image at **${data.built_image}**`
+}
+
 async function main() {
     const prId = github.context.payload.pull_request?.number;
     const owner = github.context.repo.owner;
@@ -42,6 +55,10 @@ async function main() {
 
         const contentToWrite = yaml.dump(data);
         fs.writeFileSync(core.getInput("filename"), contentToWrite);
+
+        if(!core.getInput("quiet") && !!prInfo) {
+            await write_comment(build_comment_body(data));
+        }
     } catch(err) {
         core.setFailed(err);
     }
