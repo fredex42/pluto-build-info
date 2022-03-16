@@ -20,6 +20,7 @@ Put the following step into a Github Actions workflow:
         builtimage: built/image/path:${{ env.GITHUB_RUN_NUMBER }} #REQUIRED, change this to whatever your image naming convention is
         token: ${{ secrets.GITHUB_TOKEN }} #REQUIRED, always required so it can talk to the github API
         filename: build-info.yaml #OPTIONAL, defaults to "build-info.yaml" in the current directory if not specified
+        quiet: true #OPTIONAL, if set this prevents a comment being created in the PR giving the output built_image
 ```
 
 This outputs a yaml file to the filename you specify.  You can then upload it as a build artifact:

@@ -56,7 +56,7 @@ async function main() {
         const contentToWrite = yaml.dump(data);
         fs.writeFileSync(core.getInput("filename"), contentToWrite);
 
-        if(!core.getInput("quiet")) {
+        if(!core.getInput("quiet") && !!prInfo) {
             await write_comment(build_comment_body(data));
         }
     } catch(err) {
